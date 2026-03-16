@@ -115,4 +115,4 @@ npm run format       # Format code
 
 ### 📄 License
 
-MIT License - see LICENSE file.
+This project is licensed under the MIT License – see the [LICENSE](./LICENSE) file for details.
