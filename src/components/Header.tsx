@@ -1,7 +1,8 @@
 import type { FC } from "react"
 import { useState } from "react"
-import { buttonVariants } from "./ui/button"
-import { Plane } from "lucide-react"
+import { Button, buttonVariants } from "./ui/button"
+import { ButtonGroup, ButtonGroupSeparator } from "@/components/ui/button-group"
+import { CircleQuestionMark, Moon, Plane, Sun } from "lucide-react"
 
 const Header: FC = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -14,22 +15,32 @@ const Header: FC = () => {
                 <h2 className="text-white">Travily</h2>
                 {/* Desktop nav */}
                 <div className="hidden lg:flex justify-evenly items-center w-1/3">
-                    <a href="help" className="text-white">
-                        Help
+                    <a
+                        href="/help"
+                        className="text-white inline-flex items-center gap-1 pl-1 h-10">
+                        <CircleQuestionMark className="w-4 h-4 shrink-0 " />
+                        <span className="leading-none">Help</span>
                     </a>
                     <a
                         href="/mytrip"
-                        className="text-white inline-flex items-center pl-1">
-                        <div className="flex items-center pl-1">
-                            <Plane className="w-4 h-4 rotate-317 translate-y-2" />
-                            <span>My Trip</span>
-                        </div>
+                        className="text-white inline-flex items-center gap-1 pl-1 h-10">
+                        <Plane className="w-4 h-4 shrink-0 rotate-317 -translate-y-0.5" />
+                        <span className="leading-none">My Trip</span>
                     </a>
-                    <a href="login" className="text-secondary">
+                    <ButtonGroup>
+                        <Button variant="outline" size="icon">
+                            <Sun />
+                        </Button>
+                        <ButtonGroupSeparator />
+                        <Button variant="outline" size="icon">
+                            <Moon />
+                        </Button>
+                    </ButtonGroup>
+                    <a href="/login" className="text-white">
                         Login
                     </a>
                     <a
-                        href="signup"
+                        href="/signup"
                         className={buttonVariants({
                             variant: "outline",
                             size: "sm",
@@ -39,30 +50,41 @@ const Header: FC = () => {
                         Signup
                     </a>
                 </div>
-                {/* Mobile hamburger button */}
-                <button
-                    type="button"
-                    onClick={toggleMenu}
-                    className="lg:hidden p-2 mr-1 rounded focus:outline-none relative w-10 h-8 flex flex-col justify-center">
-                    <span
-                        className={[
-                            "hamburger-line w-6 h-0.5 bg-white rounded transition-all duration-300 origin-center mb-1.5",
-                            isOpen ? "rotate-45 translate-y-2" : "",
-                        ].join(" ")}
-                    />
-                    <span
-                        className={[
-                            "hamburger-line w-6 h-0.5 bg-white rounded transition-all duration-300",
-                            isOpen ? "opacity-0" : "",
-                        ].join(" ")}
-                    />
-                    <span
-                        className={[
-                            "hamburger-line w-6 h-0.5 bg-white rounded transition-all duration-300 origin-center mt-1.5",
-                            isOpen ? "-rotate-45 -translate-y-2" : "",
-                        ].join(" ")}
-                    />
-                </button>
+                <div className="lg:hidden flex">
+                    <ButtonGroup>
+                        <Button variant="outline" size="icon">
+                            <Sun />
+                        </Button>
+                        <ButtonGroupSeparator />
+                        <Button variant="outline" size="icon">
+                            <Moon />
+                        </Button>
+                    </ButtonGroup>
+                    {/* Mobile hamburger button */}
+                    <button
+                        type="button"
+                        onClick={toggleMenu}
+                        className="lg:hidden p-2 mr-1 rounded focus:outline-none relative w-10 h-8 flex flex-col justify-center">
+                        <span
+                            className={[
+                                "hamburger-line w-6 h-0.5 bg-white rounded transition-all duration-300 origin-center mb-1.5",
+                                isOpen ? "rotate-45 translate-y-2" : "",
+                            ].join(" ")}
+                        />
+                        <span
+                            className={[
+                                "hamburger-line w-6 h-0.5 bg-white rounded transition-all duration-300",
+                                isOpen ? "opacity-0" : "",
+                            ].join(" ")}
+                        />
+                        <span
+                            className={[
+                                "hamburger-line w-6 h-0.5 bg-white rounded transition-all duration-300 origin-center mt-1.5",
+                                isOpen ? "-rotate-45 -translate-y-2" : "",
+                            ].join(" ")}
+                        />
+                    </button>
+                </div>
             </nav>
 
             {/* mobile menu */}
