@@ -24,7 +24,7 @@ const ModeToggle: FC = () => {
     )
 
     function setAppTheme(theme: 'system' | 'light' | 'dark') {
-        if(theme === 'system) {
+        if(theme === 'system') {
            setThemeState(window.matchMedia("(prefers-color-scheme: dark)").matches
                 ? "dark"
                 : "light")
