@@ -1,8 +1,8 @@
 import type { FC } from "react"
 import { useState } from "react"
-import { Button, buttonVariants } from "./ui/button"
-import { ButtonGroup, ButtonGroupSeparator } from "@/components/ui/button-group"
-import { CircleQuestionMark, Moon, Plane, Sun } from "lucide-react"
+import { buttonVariants } from "./ui/button"
+import { CircleQuestionMark, Plane } from "lucide-react"
+import ModeToggle from "./ModeToggle"
 
 const Header: FC = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -27,15 +27,7 @@ const Header: FC = () => {
                         <Plane className="w-4 h-4 shrink-0 rotate-317 -translate-y-0.5" />
                         <span className="leading-none">My Trip</span>
                     </a>
-                    <ButtonGroup>
-                        <Button variant="outline" size="icon">
-                            <Sun />
-                        </Button>
-                        <ButtonGroupSeparator />
-                        <Button variant="outline" size="icon">
-                            <Moon />
-                        </Button>
-                    </ButtonGroup>
+                    <ModeToggle />
                     <a href="/login" className="text-white">
                         Login
                     </a>
@@ -50,16 +42,9 @@ const Header: FC = () => {
                         Signup
                     </a>
                 </div>
-                <div className="lg:hidden flex">
-                    <ButtonGroup>
-                        <Button variant="outline" size="icon">
-                            <Sun />
-                        </Button>
-                        <ButtonGroupSeparator />
-                        <Button variant="outline" size="icon">
-                            <Moon />
-                        </Button>
-                    </ButtonGroup>
+                {/* Mobile controls */}
+                <div className="flex items-center gap-1 lg:hidden">
+                    <ModeToggle />
                     {/* Mobile hamburger button */}
                     <button
                         type="button"
@@ -115,7 +100,7 @@ const Header: FC = () => {
                         variant: "outline",
                         size: "sm",
                         className:
-                            "m-5 bg-secondary text-secondary-foreground hover:bg-secondary/80 border-secondary",
+                            "mx-5 mt-4 mb-4 bg-secondary text-secondary-foreground hover:bg-secondary/80 border-secondary",
                     })}>
                     Signup
                 </a>
