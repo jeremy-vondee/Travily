@@ -5,36 +5,49 @@ import { Moon, Sun } from "lucide-react"
 import { Button } from "./ui/button"
 
 const ModeToggle: FC = () => {
-    const [theme, setThemeState] = React.useState<"theme-light" | "dark">(
+    const [theme, setThemeState] = React.useState<'system' | "light" | "dark">(
         () => {
-            if (typeof window === "undefined") return "theme-light"
+            if (typeof window === "undefined") return "light"
 
+            // Get persisted theme
             const rawSaved = localStorage.getItem("theme")
 
-            // Only accept EXACT matches
-            if (rawSaved === "dark") return "dark"
-            if (rawSaved === "theme-light") return "theme-light"
-
-            // System preference fallback
-            return window.matchMedia("(prefers-color-scheme: dark)").matches
-                ? "dark"
-                : "theme-light"
+            // Set state based on system preferences from persisted theme
+            if(rawSaved === 'system') {
+                return window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "dark"
+                    : "light"
+            }
+            
+            return rawSaved
         },
     )
 
-    React.useEffect(() => {
-        if (typeof window === "undefined") return
-
-        const isDark = theme === "dark"
-        document.documentElement.classList[isDark ? "add" : "remove"]("dark")
-        localStorage.setItem("theme", theme === "dark" ? "dark" : "theme-light")
-    }, [theme])
+    function setAppTheme(theme: 'system' | 'light' | 'dark') {
+        if(theme === 'system) {
+           setThemeState(window.matchMedia("(prefers-color-scheme: dark)").matches
+                ? "dark"
+                : "light")
+        } else {
+            setThemeState(theme)
+            // Get the root element (<html>)
+            const root = document.documentElement
+            // Remove previously applied schemes from the root element
+            root.classList.remove('light', 'dark')
+            // Add the currently selected theme
+            root.classList.add(theme)
+        }
+        
+       
+        // Persist in local storage
+        localStorage.setItem("theme", theme)
+    }
 
     return (
         <>
             <div className="flex items-center gap-1 p-1 bg-primary/10 rounded-md">
                 <button
-                    onClick={() => setThemeState("theme-light")}
+                    onClick={() => setAppTheme("light")}
                     className={`
                         p-2 rounded-md transition-all duration-200 flex items-center justify-center
                         ${
@@ -48,7 +61,7 @@ const ModeToggle: FC = () => {
                 </button>
                 <div className="w-px h-6 bg-white/30 mx-1" />
                 <button
-                    onClick={() => setThemeState("dark")}
+                    onClick={() => setAppTheme("dark")}
                     className={`
                         p-2 rounded-md transition-all duration-200 flex items-center justify-center
                         ${
