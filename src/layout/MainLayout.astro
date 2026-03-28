@@ -6,10 +6,11 @@ import Header from "@/components/Header";
 
 interface Props {
     title: string;
-    description?: string;
+    description: string,
+    noindex: boolean
 }
 
-const { title, description } = Astro.props;
+const { title, description, noindex } = Astro.props;
 ---
 
 <script is:inline>
@@ -50,6 +51,7 @@ const { title, description } = Astro.props;
         <meta name="robots" content="index, follow" />
         <title>{title}</title>
         <meta name="description" content={description} />
+        {noindex && <meta name="robots" content="noindex, follow" />}
     </head>
     <body>
         <TooltipProvider client:load>
