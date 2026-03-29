@@ -1,8 +1,16 @@
 {
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "env": {
-    "browser": true,
-    "es2021": true
-  },
-  "rules": {}
+    "$schema": "./node_modules/oxlint/configuration_schema.json",
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "plugins": ["typescript"],
+    "rules": {
+        "typescript/no-floating-promises": "error",
+        "typescript/no-unsafe-assignment": "warn"
+    },
+    "options": {
+        "typeAware": true,
+        "typeCheck": true
+    }
 }
