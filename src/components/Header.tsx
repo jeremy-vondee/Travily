@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Button, buttonVariants } from "./ui/button"
 import { CircleQuestionMark, Ticket, CircleUserRound } from "lucide-react"
 import ModeToggle from "./ModeToggle"
+import LanguageDiaglog from "./LanguageDialog"
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -27,8 +28,13 @@ const Header = () => {
                         <CircleQuestionMark className="w-4 h-4 shrink-0 " />
                         <span className="leading-none">Help</span>
                     </a>
+                    <LanguageDiaglog />
                     <ModeToggle />
-                    <Button variant="outline" size="icon-lg" className="bg-primary border-0">
+                    <Button
+                        variant="outline"
+                        size="icon-lg"
+                        className="bg-primary border-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 hover:shadow-none"
+                    >
                         <CircleUserRound className="[&_svg]:size-7 shrink-0 text-white" />
                     </Button>
                 </div>
