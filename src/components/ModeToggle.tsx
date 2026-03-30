@@ -58,10 +58,11 @@ const ModeToggle = () => {
             <ToggleGroupItem
                 value="system"
                 className={clsx({
-                    "data-[state=on]:bg-white ": theme === "system",
+                    "data-[state=on]:bg-secondary-foreground data-[state=on]:text-primary":
+                        theme === "system",
                 })}
             >
-                <Laptop className="text-white" />
+                <Laptop className="text-white hover:text-primary!" />
             </ToggleGroupItem>
             <ToggleGroupItem
                 value="light"
@@ -71,7 +72,7 @@ const ModeToggle = () => {
             </ToggleGroupItem>
             <ToggleGroupItem
                 value="dark"
-                className={clsx({ "data-[state=on]:bg-white": theme === "dark" })}
+                className={clsx({ "data-[state=on]:bg-secondary-foreground": theme === "dark" })}
             >
                 <Moon className="text-white" />
             </ToggleGroupItem>
