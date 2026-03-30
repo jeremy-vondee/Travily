@@ -1,8 +1,8 @@
 import { useState } from "react"
-import { Button, buttonVariants } from "./ui/button"
-import { CircleQuestionMark, Ticket, CircleUserRound } from "lucide-react"
+import { CircleQuestionMark, Ticket } from "lucide-react"
 import ModeToggle from "./ModeToggle"
 import LanguageDiaglog from "./LanguageDialog"
+import LogIn from "./Login"
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -30,13 +30,7 @@ const Header = () => {
                     </a>
                     <LanguageDiaglog />
                     <ModeToggle />
-                    <Button
-                        variant="outline"
-                        size="icon-lg"
-                        className="bg-primary border-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 hover:shadow-none"
-                    >
-                        <CircleUserRound className="[&_svg]:size-7 shrink-0 text-white" />
-                    </Button>
+                    <LogIn />
                 </div>
                 {/* Mobile controls */}
                 <div className="flex items-center gap-1 lg:hidden">
@@ -73,38 +67,26 @@ const Header = () => {
             <nav
                 id="mobile-menu"
                 className={[
-                    "lg:hidden bg-slate-900 border-bg-slate-800 transition-all duration-300 flex-col items-start",
+                    "lg:hidden bg-gray-700 border-bg-slate-800 transition-all duration-300 flex-col items-start",
                     isOpen ? "flex" : "hidden",
                 ].join(" ")}
             >
                 <a
+                    href="/mybooking"
+                    className="ml-3 mt-2 text-white inline-flex items-center gap-1 pl-1 h-10"
+                >
+                    <Ticket className="w-4 h-4 shrink-0 rotate-317 -translate-y-0.5" />
+                    <span className="leading-none">My Booking</span>
+                </a>
+                <a
                     href="/help"
-                    className="ml-2 text-white inline-flex items-center gap-1 pl-1 h-10"
+                    className="ml-3 text-white inline-flex items-center gap-1 pl-1 h-10"
                 >
                     <CircleQuestionMark className="w-4 h-4 shrink-0 " />
                     <span className="leading-none">Help</span>
                 </a>
-                <a
-                    href="/mytrip"
-                    className="ml-2 text-white inline-flex items-center gap-1 pl-1 h-10"
-                >
-                    <Ticket className="w-4 h-4 shrink-0 rotate-317 -translate-y-0.5" />
-                    <span className="leading-none">My Trip</span>
-                </a>
-                <a href="/login" className="ml-3 text-white">
-                    Login
-                </a>
-                <a
-                    href="/signup"
-                    className={buttonVariants({
-                        variant: "default",
-                        size: "sm",
-                        className:
-                            "mx-5 mt-4 mb-4 bg-secondary text-secondary-foreground hover:bg-secondary/80 border-secondary dark:bg-white dark:text-primay dark:hover:bg-white",
-                    })}
-                >
-                    Signup
-                </a>
+                <LanguageDiaglog />
+                <LogIn />
             </nav>
         </>
     )
