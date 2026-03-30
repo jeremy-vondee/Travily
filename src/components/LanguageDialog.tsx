@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { Check, Globe } from "lucide-react"
+import { Check, ChevronDown, Globe } from "lucide-react"
 
 type Language = {
     country: string
@@ -69,19 +69,28 @@ const LanguageDiaglog = () => {
     const [open, setOpen] = useState(false)
     const [search, setSearch] = useState("")
 
-    const [currentLang, setCurrentLang] = useState("EN")
+    const [currentLang, setCurrentLang] = useState<Language>(languages[0])
 
     useEffect(() => {
-        const saved = localStorage.getItem("lang") || "EN"
-        setCurrentLang(saved.toUpperCase())
+        const savedCode = localStorage.getItem("lang") || null
+
+        if (!savedCode) {
+            // Simple user-agent fallback (or use navigator.language)
+            const isUS = navigator.language.startsWith("en-US")
+            const defaultLang = isUS
+                ? languages.find((l) => l.code === "US")
+                : languages.find((l) => l.code === "GB")
+            setCurrentLang(defaultLang || languages[0])
+        } else {
+            const savedLang = languages.find((l) => l.code === savedCode.toUpperCase())
+            setCurrentLang(savedLang || languages[0])
+        }
     }, [])
 
-    const currentLanguage = languages.find((lang) => lang.code === currentLang) || languages[0]
-
-    const handleSelect = (code: string) => {
-        setCurrentLang(code)
-        localStorage.setItem("lang", code)
-        document.documentElement.lang = code.toLowerCase()
+    const handleSelect = (selectedLang: Language) => {
+        setCurrentLang(selectedLang)
+        localStorage.setItem("lang", selectedLang.code)
+        document.documentElement.lang = selectedLang.code.toLowerCase()
         setOpen(false)
         setSearch("")
     }
@@ -91,19 +100,30 @@ const LanguageDiaglog = () => {
             lang.language.toLowerCase().includes(search.toLowerCase()) ||
             lang.country.toLowerCase().includes(search.toLowerCase()),
     )
-    console.log(currentLang)
+
+    const isCurrent = (lang: Language) =>
+        lang.code === currentLang.code &&
+        lang.country === currentLang.country &&
+        lang.language === currentLang.language
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button
                     variant="outline"
-                    className="bg-transparent text-white border-0 shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 hover:shadow-none"
+                    className="bg-transparent text-white border-0 shadow-none 
+             focus-visible:ring-0 focus-visible:ring-offset-0 
+             hover:shadow-none
+             dark:bg-transparent dark:text-white dark:border-0 dark:shadow-none
+             dark:hover:bg-transparent dark:hover:text-white 
+             dark:hover:shadow-none dark:hover:border-0"
                 >
                     <img
-                        src={`https://flagcdn.com/w20/${currentLang.toLowerCase()}.png`}
-                        alt={currentLanguage?.country}
+                        src={`https://flagcdn.com/w20/${currentLang.code.toLowerCase()}.png`}
+                        alt={currentLang.country}
                         className="w-5 h-4 rounded-sm"
                     />
+                    <ChevronDown />
                     <span className="sr-only">Change language</span>
                 </Button>
             </DialogTrigger>
@@ -121,46 +141,45 @@ const LanguageDiaglog = () => {
                         />
                     </Field>
                 </FieldGroup>
-                <DialogDescription className="flex-1">
-                    <div className="-mx-4 max-h-[50vh] overflow-y-auto px-4">
-                        {filteredSearch.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center py-8 text-center text-muted-foreground">
-                                <Globe className="h-8 w-8 mb-2 opacity-50" />
-                                <p className="text-sm">No languages found</p>
-                            </div>
-                        ) : (
-                            filteredSearch.map(({ country, language, code }) => (
-                                <button
-                                    key={`${country}-${language}-${code}`}
-                                    onClick={() => handleSelect(code)}
-                                    className={`w-full flex items-center gap-3 p-3 text-left rounded-lg transition-all ${
-                                        currentLang === code
-                                            ? "bg-primary text-primary-foreground shadow-sm"
-                                            : "hover:bg-accent hover:text-accent-foreground"
-                                    }`}
-                                >
-                                    <span className="inline-block w-6 h-4 shrink-0">
-                                        <img
-                                            src={`https://flagcdn.com/w20/${code.toLowerCase()}.png`}
-                                            alt={`${country} flag`}
-                                            className="w-6 h-4 object-cover rounded"
-                                            loading="lazy"
-                                        />
-                                    </span>
-                                    <div className="min-w-0 flex-1">
-                                        <div className="font-medium truncate">{language}</div>
-                                        <div className="text-xs text-muted-foreground truncate">
-                                            {country}
-                                        </div>
+                <DialogDescription>Select your preferred language and region.</DialogDescription>
+                <div className="-mx-4 max-h-[50vh] overflow-y-auto px-4">
+                    {filteredSearch.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-8 text-center text-muted-foreground">
+                            <Globe className="h-8 w-8 mb-2 opacity-50" />
+                            <p className="text-sm">No languages found</p>
+                        </div>
+                    ) : (
+                        filteredSearch.map(({ country, language, code }, index) => (
+                            <button
+                                key={`${code}-${country}-${language}-${index}`}
+                                onClick={() => handleSelect({ country, language, code })}
+                                className={`w-full flex items-center gap-3 p-3 text-left rounded-lg transition-all ${
+                                    isCurrent({ country, language, code })
+                                        ? "bg-primary text-primary-foreground shadow-sm"
+                                        : "hover:bg-accent hover:text-accent-foreground"
+                                }`}
+                            >
+                                <span className="inline-block w-6 h-4 shrink-0">
+                                    <img
+                                        src={`https://flagcdn.com/w20/${code.toLowerCase()}.png`}
+                                        alt={`${country} flag`}
+                                        className="w-6 h-4 object-cover rounded"
+                                        loading="lazy"
+                                    />
+                                </span>
+                                <div className="min-w-0 flex-1">
+                                    <div className="font-medium truncate">{language}</div>
+                                    <div className="text-xs text-muted-foreground truncate">
+                                        {country}
                                     </div>
-                                    {currentLang === code && (
-                                        <Check className="h-4 w-4 ml-auto shrink-0 text-primary-foreground" />
-                                    )}
-                                </button>
-                            ))
-                        )}
-                    </div>
-                </DialogDescription>
+                                </div>
+                                {isCurrent({ country, language, code }) && (
+                                    <Check className="h-4 w-4 ml-auto shrink-0 text-primary-foreground" />
+                                )}
+                            </button>
+                        ))
+                    )}
+                </div>
             </DialogContent>
         </Dialog>
     )
