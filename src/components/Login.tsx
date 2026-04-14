@@ -9,9 +9,24 @@ import {
 } from "@/components/ui/dialog"
 import { Field, FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { supabase } from "@/lib/supabaseClient"
 import { CircleUserRound, Mail } from "lucide-react"
+import { useState } from "react"
 
 const LogIn = () => {
+    // cost [isLoading, setIsLoading] = useState(true)
+    const [email, setEmail] = useState("")
+
+    const signInWithGoogle = async () => {
+        await supabase.auth.signInWithOAuth({
+            provider: "google",
+            options: {
+                redirectTo: `${window.location.origin}/api/auth/callback`,
+            },
+        })
+    }
+    // const handleEmailSubmit =  () => {}
+
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -34,13 +49,17 @@ const LogIn = () => {
                         Sign in or create an account to save searches, find grate deals, and more.
                     </DialogDescription>
                 </DialogHeader>
-                <a
+                {/* <a
                     href="#"
                     className="inline-flex items-center gap-1 pl-1 h-10 border rounded-lg justify-center"
                 >
-                    <img src="/public/google.svg" alt="Google logo" />
+                    <img src="/google.svg" alt="Google logo" />
                     <span className="leading-none"> Google</span>
-                </a>
+                </a> */}
+                <Button type="button" onClick={signInWithGoogle}>
+                    <img src="/google.svg" alt="Google logo" />
+                    Google
+                </Button>
                 <div className="flex items-center mt2">
                     <hr className="grow border-slate-200 dark:border-slate-700 h-px" />
                     <span className="shrink-0 px-4 py-2 text-xs font-semibold tracking-wider text-slate-500">
@@ -55,6 +74,9 @@ const LogIn = () => {
                             className="shadow-none focus-visible:ring-0 focus-visible:ring-offset-0 hover:shadow-none"
                             placeholder="Enter email"
                             type="email"
+                            value={email}
+                            required={true}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                     </Field>
                 </FieldGroup>
