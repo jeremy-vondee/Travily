@@ -1,41 +1,128 @@
-import { useState } from "react"
-import { CircleQuestionMark, Ticket } from "lucide-react"
+import { useEffect, useState } from "react"
+import { CircleQuestionMark, Ticket, LogOut, User as UserIcon } from "lucide-react"
 import ModeToggle from "./ModeToggle"
 import LanguageDiaglog from "./LanguageDialog"
-import LogIn from "./Login"
+import AuthDialog from "./AuthDialog"
+import { supabase } from "@/lib/supabaseClient"
+import { type User } from "@supabase/supabase-js"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
 
 const Header = () => {
+    const [user, setUser] = useState<User | null>(null)
     const [isOpen, setIsOpen] = useState(false)
+
+    useEffect(() => {
+        const loadUser = async () => {
+            const { data } = await supabase.auth.getUser()
+            setUser(data.user)
+        }
+
+        void loadUser()
+
+        const {
+            data: { subscription },
+        } = supabase.auth.onAuthStateChange((_event, session) => {
+            setUser(session?.user ?? null)
+        })
+
+        return () => subscription.unsubscribe()
+    }, [])
+
+    const signOut = async () => {
+        await supabase.auth.signOut()
+        setUser(null)
+    }
+
     const toggleMenu = () => {
         setIsOpen((prev) => !prev)
     }
+
     return (
         <>
             <nav className="bg-primary h-16 flex items-center pl-3 pr-3 justify-between">
                 <a href="/">
                     <img src="/logo.svg" alt="Travily logo" />
                 </a>
+
                 {/* Desktop nav */}
                 <div className="hidden lg:flex justify-evenly items-center w-1/3">
                     <a
                         href="/mybooking"
-                        className="text-white inline-flex items-center gap-1 pl-1 h-10"
+                        className="text-white inline-flex items-center gap-1 pl-1 h-10 hover:underline"
                     >
                         <Ticket className="w-4 h-4 shrink-0 rotate-317 -translate-y-0.5" />
                         <span className="leading-none">My Booking</span>
                     </a>
-                    <a href="/help" className="text-white inline-flex items-center gap-1 pl-1 h-10">
-                        <CircleQuestionMark className="w-4 h-4 shrink-0 " />
+                    <a
+                        href="/help"
+                        className="text-white inline-flex items-center gap-1 pl-1 h-10 hover:underline"
+                    >
+                        <CircleQuestionMark className="w-4 h-4 shrink-0" />
                         <span className="leading-none">Help</span>
                     </a>
                     <LanguageDiaglog />
                     <ModeToggle />
-                    <LogIn />
+                    {user ? (
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="h-10 w-10 rounded-full">
+                                    <Avatar className="h-10 w-10">
+                                        <AvatarImage
+                                            src={
+                                                user.user_metadata?.avatar_url as string | undefined
+                                            }
+                                            alt={user.email ?? ""}
+                                        />
+                                        <AvatarFallback className="bg-primary text-primary-foreground">
+                                            {user.email?.[0]?.toUpperCase()}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-56">
+                                <DropdownMenuLabel className="font-normal">
+                                    <div className="flex flex-col space-y-1">
+                                        <p className="text-sm font-medium leading-none">
+                                            {user.user_metadata?.full_name || user.email}
+                                        </p>
+                                        <p className="text-xs leading-none text-muted-foreground">
+                                            {user.email}
+                                        </p>
+                                    </div>
+                                </DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem>
+                                    <UserIcon className="mr-2 h-4 w-4" />
+                                    <span>Profile</span>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                    <Ticket className="mr-2 h-4 w-4" />
+                                    <span>My bookings</span>
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={signOut}>
+                                    <LogOut className="mr-2 h-4 w-4" />
+                                    <span>Sign out</span>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    ) : (
+                        <AuthDialog />
+                    )}
                 </div>
+
                 {/* Mobile controls */}
                 <div className="flex items-center gap-1 lg:hidden">
                     <ModeToggle />
-                    {/* Mobile hamburger button */}
                     <button
                         type="button"
                         onClick={toggleMenu}
@@ -63,30 +150,77 @@ const Header = () => {
                 </div>
             </nav>
 
-            {/* mobile menu */}
+            {/* Mobile menu */}
             <nav
                 id="mobile-menu"
                 className={[
-                    "lg:hidden bg-gray-700 border-bg-slate-800 transition-all duration-300 flex-col items-start",
+                    "lg:hidden bg-gray-700 border-b-slate-800 transition-all duration-300 flex-col items-start p-4",
                     isOpen ? "flex" : "hidden",
                 ].join(" ")}
             >
                 <a
                     href="/mybooking"
-                    className="ml-3 mt-2 text-white inline-flex items-center gap-1 pl-1 h-10"
+                    className="text-white inline-flex items-center gap-2 py-2 hover:underline"
                 >
-                    <Ticket className="w-4 h-4 shrink-0 rotate-317 -translate-y-0.5" />
-                    <span className="leading-none">My Booking</span>
+                    <Ticket className="w-5 h-5 shrink-0 rotate-317 -translate-y-0.5" />
+                    My Booking
                 </a>
                 <a
                     href="/help"
-                    className="ml-3 text-white inline-flex items-center gap-1 pl-1 h-10"
+                    className="text-white inline-flex items-center gap-2 py-2 hover:underline"
                 >
-                    <CircleQuestionMark className="w-4 h-4 shrink-0 " />
-                    <span className="leading-none">Help</span>
+                    <CircleQuestionMark className="w-5 h-5 shrink-0" />
+                    Help
                 </a>
                 <LanguageDiaglog />
-                <LogIn />
+                {user ? (
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-12 w-full justify-start gap-3">
+                                <Avatar className="h-9 w-9">
+                                    <AvatarImage
+                                        src={user.user_metadata?.avatar_url as string | undefined}
+                                        alt={(user.email as string | undefined) ?? ""}
+                                    />
+                                    <AvatarFallback className="bg-primary text-primary-foreground">
+                                        {user.email?.[0]?.toUpperCase()}
+                                    </AvatarFallback>
+                                </Avatar>
+                                <span className="font-medium">
+                                    {user.user_metadata?.full_name || user.email}
+                                </span>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="w-56">
+                            <DropdownMenuLabel className="font-normal">
+                                <div className="flex flex-col space-y-1">
+                                    <p className="text-sm font-medium leading-none">
+                                        {user.user_metadata?.full_name || user.email}
+                                    </p>
+                                    <p className="text-xs leading-none text-muted-foreground">
+                                        {user.email}
+                                    </p>
+                                </div>
+                            </DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>
+                                <UserIcon className="mr-2 h-4 w-4" />
+                                Profile
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <Ticket className="mr-2 h-4 w-4" />
+                                My bookings
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={signOut}>
+                                <LogOut className="mr-2 h-4 w-4" />
+                                Sign out
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                ) : (
+                    <AuthDialog />
+                )}
             </nav>
         </>
     )
