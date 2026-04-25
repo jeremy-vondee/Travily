@@ -1,0 +1,166 @@
+---
+import MainLayout from "@/layout/MainLayout.astro";
+import {
+  ArrowRight,
+  MapPinned,
+  Plane,
+  Wallet,
+  ShieldCheck,
+  Ticket,
+  Globe,
+  Luggage,
+  Sun,
+  Clock,
+} from "lucide-react";
+
+const featuredTips = [
+  {
+    title: "Pack lighter",
+    description: "Choose versatile clothes and keep your bag easy to carry. Learn our 5-item packing strategy.",
+    icon: Luggage,
+  },
+  {
+    title: "Save money",
+    description: "Compare prices early and use flexible date searches. Discover 15 ways to cut costs by 40%.",
+    icon: Wallet,
+  },
+  {
+    title: "Travel safely",
+    description: "Keep copies of your documents and stay aware of your surroundings. Our safety checklist for every trip.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Book smarter",
+    description: "Watch for fare changes and confirm baggage rules before checkout. Timing tips that save you hundreds.",
+    icon: Ticket,
+  },
+  {
+    title: "Jet lag fix",
+    description: "Reset your body clock before you land. Science-backed strategies for feeling great on arrival.",
+    icon: Clock,
+  },
+  {
+    title: "Weather prep",
+    description: "Know what to pack for any climate. City-by-city guides to dress right, every time.",
+    icon: Sun,
+  },
+];
+
+const quickTips = [
+  "Book flights 2-3 months ahead for 20% savings",
+  "Pack a power bank and universal adapter",
+  "Download offline maps before you go",
+  "Always carry passport copies",
+  "Use incognito mode for price comparisons",
+];
+---
+
+<MainLayout
+  title="Travily - Travel Tips & Guides"
+  description="Travily - Essential travel tips, packing guides, and money-saving strategies for smarter trips."
+  noindex={false}
+>
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden bg-linear-to-r from-primary/20 to-secondary/20 pb-24 pt-32">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <div class="mt-6 mb-6 inline-flex items-center gap-2 rounded-full bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground">
+          <MapPinned className="h-4 w-4" />
+          Travel tips
+        </div>
+        <h1 class="text-4xl font-bold tracking-tight text-foreground sm:text-5xl lg:text-6xl">
+          Smarter travel starts here
+        </h1>
+        <p class="mt-3 mb-4 text-xl text-muted-foreground">
+          Practical guides to pack lighter, spend less, travel safer, and book with confidence.
+        </p>
+        <div class="mt-10 mb-6 flex flex-col gap-4 sm:flex-row">
+          <a
+            href="/flights"
+            class="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-4 text-lg font-medium text-primary-foreground shadow-lg hover:bg-primary/90"
+          >
+            <Plane className="h-5 w-5" />
+            Find flights
+          </a>
+          <a
+            href="/travel-tips"
+            class="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-6 py-4 text-lg font-medium hover:bg-muted"
+          >
+            Browse all tips
+            <ArrowRight className="h-5 w-5" />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Tips Grid -->
+  <section class="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
+    <div class="mb-6"  >
+      <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">Featured travel guides</h2>
+      <p class="mt-4 text-muted-foreground">
+        Real strategies from seasoned travelers that actually work.
+      </p>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {featuredTips.map((tip) => (
+        <div class="group rounded-2xl border bg-background p-8 shadow-sm transition hover:-translate-y-2 hover:shadow-xl">
+          <div class="mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <tip.icon className="h-6 w-6" />
+          </div>
+          <h3 class="text-xl font-semibold tracking-tight">{tip.title}</h3>
+          <p class="mt-3 text-muted-foreground">{tip.description}</p>
+          <div class="mt-6 inline-flex items-center gap-2 text-sm font-medium text-primary">
+            Read guide
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Quick Tips Section -->
+  <section class="mt-6 mb-6 max-w-4xl px-4 py-20 sm:px-6 lg:px-8">
+    <div class="rounded-2xl p-12">
+      <h2 class="mb-6 text-2xl font-bold tracking-tight">Quick tips for every trip</h2>
+      <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {quickTips.map((tip, i) => (
+          <div class="flex items-start gap-3 rounded-xl bg-background p-4 shadow-sm">
+            <div class="mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground font-mono text-xs font-bold">
+              {i + 1}
+            </div>
+            <p class="text-sm">{tip}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <!-- <section class="mt-3 mx-auto max-w-4xl px-4 py-20 text-center sm:px-6 lg:px-8">
+    <div class="rounded-2xl  p-12">
+      <Globe className="mx-auto h-16 w-16" />
+      <h2 class="mt-6 text-3xl font-bold tracking-tight">
+        Ready to travel smarter?
+      </h2>
+      <p class="mt-4 text-xl opacity-90">
+        Get personalized travel tips and exclusive deals in your inbox.
+      </p>
+      <div class="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center">
+        <div class="flex w-full sm:w-auto">
+          <input
+            type="email"
+            placeholder="Enter your email"
+            class="flex-1 rounded-l-xl border-0  px-4 py-4 text-lg  focus:outline-none focus:ring-2 focus:ring-white/50 sm:w-80"
+          />
+          <button
+            class="rounded-r-xl bg-white px-8 py-4 text-lg font-semibold text-primary shadow-lg hover:bg-white/90"
+          >
+            Get tips
+          </button>
+        </div>
+      </div>
+    </div>
+  </section> -->
+</MainLayout>
