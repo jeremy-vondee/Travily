@@ -1,13 +1,212 @@
 ---
-import MainLayout from "@/layout/MainLayout.astro"
+import MainLayout from "@/layout/MainLayout.astro";
+import {
+  HelpCircle,
+  Search,
+  MessageCircle,
+  Mail,
+  Phone,
+  ArrowRight,
+  ShieldCheck,
+  Globe,
+  Clock3,
+} from "lucide-react";
+
+const faqs = [
+  {
+    question: "How do I book a flight?",
+    answer:
+      "Use the flights search, choose your route and dates, then compare results before confirming your booking.",
+  },
+  {
+    question: "Can I change or cancel a booking?",
+    answer:
+      "Changes depend on the airline and fare type. Check the booking details or contact support as soon as possible.",
+  },
+  {
+    question: "Where do I find my ticket?",
+    answer:
+      "After booking, your confirmation and ticket details will be sent to your email and saved in your account if you are signed in.",
+  },
+  {
+    question: "How do I contact support?",
+    answer:
+      "You can use the contact form below, email support, or browse the FAQ sections for common issues.",
+  },
+];
+
+const helpLinks = [
+  {
+    title: "Booking help",
+    description: "Learn how to search, compare, and book flights with confidence.",
+    icon: Search,
+  },
+  {
+    title: "Account support",
+    description: "Get help with sign-in, profile settings, and saved trips.",
+    icon: ShieldCheck,
+  },
+  {
+    title: "Travel tips",
+    description: "Find packing advice, money-saving tricks, and travel guides.",
+    icon: Globe,
+  },
+];
 ---
 
 <MainLayout
-    title="Travily Help Center - Travel Support"
-    description="Find answers to booking questions,
-    payment issues, and trip changes. Travily support for flights, hotels, and car rentals."
-    noindex={false}>
-    <body>
-        <h1>Help</h1>
-    </body>
+  title="Travily - Help Center"
+  description="Travily help center with FAQs, booking support, and travel assistance."
+  noindex={false}
+>
+  <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+      <div class="rounded-3xl border bg-linear-to-br from-primary/10 via-background to-secondary/10 p-8 sm:p-12">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground">
+          <HelpCircle className="h-4 w-4" />
+          Help center
+        </div>
+
+        <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">
+          How can we help you today?
+        </h1>
+
+        <p class="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
+          Find answers to common questions, get support for bookings, and discover helpful travel resources in one place.
+        </p>
+
+        <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+          <a
+            href="#contact"
+            class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-4 font-medium text-primary-foreground shadow-sm hover:bg-primary/90"
+          >
+            Contact support
+            <ArrowRight className="h-4 w-4" />
+          </a>
+          <a
+            href="#faqs"
+            class="inline-flex items-center justify-center gap-2 rounded-xl border bg-background px-6 py-4 font-medium hover:bg-muted"
+          >
+            Browse FAQs
+          </a>
+        </div>
+      </div>
+
+      <div class="grid gap-4">
+        {helpLinks.map((item) => (
+          <div class="rounded-2xl border bg-background p-6 shadow-sm transition hover:shadow-md">
+            <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <item.icon className="h-5 w-5" />
+            </div>
+            <h2 class="text-lg font-semibold">{item.title}</h2>
+            <p class="mt-2 text-sm leading-6 text-muted-foreground">{item.description}</p>
+          </div>
+        ))}
+
+        <div class="rounded-2xl border bg-muted/40 p-6">
+          <div class="flex items-start gap-4">
+            <Clock3 className="mt-1 h-5 w-5 text-primary" />
+            <div>
+              <h2 class="font-semibold">Support hours</h2>
+              <p class="mt-1 text-sm text-muted-foreground">
+                We usually reply within 24 hours on weekdays.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faqs" class="mx-auto max-w-6xl px-4 pb-16 sm:px-6 lg:px-8">
+    <div class="mb-8">
+      <h2 class="text-3xl font-bold tracking-tight">Frequently asked questions</h2>
+      <p class="mt-3 text-muted-foreground">
+        Quick answers to the most common questions.
+      </p>
+    </div>
+
+    <div class="grid gap-4">
+      {faqs.map((faq) => (
+        <details class="group rounded-2xl border bg-background p-6 shadow-sm">
+          <summary class="cursor-pointer list-none text-lg font-medium">
+            {faq.question}
+          </summary>
+          <p class="mt-4 max-w-3xl text-sm leading-7 text-muted-foreground">
+            {faq.answer}
+          </p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section id="contact" class="mx-auto max-w-6xl px-4 pb-20 sm:px-6 lg:px-8">
+    <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+      <div class="rounded-3xl bg-primary p-8 text-primary-foreground sm:p-10">
+        <h2 class="text-3xl font-bold tracking-tight">Contact support</h2>
+        <p class="mt-4 text-primary-foreground/90">
+          Send us a message and we’ll get back to you as soon as possible.
+        </p>
+
+        <div class="mt-8 space-y-4 text-sm">
+          <div class="flex items-center gap-3">
+            <Mail className="h-5 w-5" />
+            <span>support@travily.com</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <Phone className="h-5 w-5" />
+            <span>+44 0000 000000</span>
+          </div>
+        </div>
+      </div>
+
+      <form class="rounded-3xl border bg-background p-8 shadow-sm sm:p-10">
+        <div class="grid gap-5">
+          <div>
+            <label for="name" class="mb-2 block text-sm font-medium">
+              Full name
+            </label>
+            <input
+              id="name"
+              type="text"
+              class="w-full rounded-xl border px-4 py-3 outline-none focus:ring-2 focus:ring-primary/40"
+              placeholder="Your name"
+            />
+          </div>
+
+          <div>
+            <label for="email" class="mb-2 block text-sm font-medium">
+              Email address
+            </label>
+            <input
+              id="email"
+              type="email"
+              class="w-full rounded-xl border px-4 py-3 outline-none focus:ring-2 focus:ring-primary/40"
+              placeholder="you@example.com"
+            />
+          </div>
+
+          <div>
+            <label for="message" class="mb-2 block text-sm font-medium">
+              Message
+            </label>
+            <textarea
+              id="message"
+              rows="5"
+              class="w-full rounded-xl border px-4 py-3 outline-none focus:ring-2 focus:ring-primary/40"
+              placeholder="Tell us how we can help..."
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-4 font-medium text-primary-foreground hover:bg-primary/90"
+          >
+            <MessageCircle className="h-4 w-4" />
+            Send message
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
 </MainLayout>
