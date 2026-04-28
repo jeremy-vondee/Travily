@@ -46,9 +46,13 @@ const Header = () => {
         setIsOpen((prev) => !prev)
     }
 
+    const closeMenu = () => {
+        setIsOpen(false)
+    }
+
     return (
         <>
-            <nav className="bg-primary h-16 flex items-center pl-3 pr-3 justify-between fixed w-screen">
+            <nav className="bg-primary h-16 flex items-center pl-3 pr-3 justify-between fixed top-0 left-0 z-50 w-screen">
                 <a href="/">
                     <img src="/logo.svg" alt="Travily logo" />
                 </a>
@@ -59,7 +63,7 @@ const Header = () => {
                         href="/mybooking"
                         className="text-white inline-flex items-center gap-1 pl-1 h-10 hover:underline"
                     >
-                        <Ticket className="w-4 h-4 shrink-0 rotate-317 -translate-y-0.5" />
+                        <Ticket className="w-4 h-4 shrink-0 rotate-[317deg] -translate-y-0.5" />
                         <span className="leading-none">My Booking</span>
                     </a>
                     <a
@@ -126,7 +130,7 @@ const Header = () => {
                     <button
                         type="button"
                         onClick={toggleMenu}
-                        className="lg:hidden p-2 mr-1 rounded focus:outline-none relative w-10 h-8 flex flex-col justify-center"
+                        className="p-2 mr-1 rounded focus:outline-none relative w-10 h-8 flex flex-col justify-center"
                     >
                         <span
                             className={[
@@ -154,19 +158,21 @@ const Header = () => {
             <nav
                 id="mobile-menu"
                 className={[
-                    "lg:hidden bg-gray-700 border-b-slate-800 transition-all duration-300 flex-col items-start p-4",
+                    "lg:hidden fixed top-16 left-0 z-40 w-screen bg-gray-700 border-b border-slate-800 transition-all duration-300 flex-col items-start p-4",
                     isOpen ? "flex" : "hidden",
                 ].join(" ")}
             >
                 <a
                     href="/mybooking"
+                    onClick={closeMenu}
                     className="text-white inline-flex items-center gap-2 py-2 hover:underline"
                 >
-                    <Ticket className="w-5 h-5 shrink-0 rotate-317 -translate-y-0.5" />
+                    <Ticket className="w-5 h-5 shrink-0 rotate-[317deg] -translate-y-0.5" />
                     My Booking
                 </a>
                 <a
                     href="/help"
+                    onClick={closeMenu}
                     className="text-white inline-flex items-center gap-2 py-2 hover:underline"
                 >
                     <CircleQuestionMark className="w-5 h-5 shrink-0" />
