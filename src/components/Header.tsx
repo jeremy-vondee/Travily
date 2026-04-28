@@ -48,7 +48,7 @@ const Header = () => {
 
     return (
         <>
-            <nav className="bg-primary h-16 flex items-center pl-3 pr-3 justify-between">
+            <nav className="bg-primary h-16 flex items-center pl-3 pr-3 justify-between fixed w-screen">
                 <a href="/">
                     <img src="/logo.svg" alt="Travily logo" />
                 </a>
