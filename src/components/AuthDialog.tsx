@@ -85,7 +85,7 @@ const AuthDialog = () => {
                     <Button
                         type="button"
                         variant="outline"
-                        className="h-12 w-full rounded-xl border-2"
+                        className="h-12 w-full rounded-xl border"
                         onClick={signInWithGoogle}
                     >
                         <img src="/google.svg" alt="Google logo" className="mr-3 h-5 w-5" />
