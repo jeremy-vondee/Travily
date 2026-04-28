@@ -72,58 +72,63 @@ const Header = () => {
                     <LanguageDiaglog />
                     <ModeToggle />
 
-                    {user ? (
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    className="h-10 w-auto rounded-full px-2 gap-3"
-                                >
-                                    <Avatar className="h-9 w-9 shrink-0">
-                                        <AvatarImage
-                                            src={
-                                                user.user_metadata?.avatar_url as string | undefined
-                                            }
-                                            alt={(user.email as string | undefined) ?? ""}
-                                        />
-                                        <AvatarFallback className="bg-white/15 text-white font-semibold">
-                                            {(user.user_metadata?.full_name ||
-                                                user.email)?.[0]?.toUpperCase()}
-                                        </AvatarFallback>
-                                    </Avatar>
-                                </Button>
-                            </DropdownMenuTrigger>
+                    <div className="mt-2">
+                        {user ? (
+                            <DropdownMenu>
+                                <DropdownMenuTrigger asChild>
+                                    <Button
+                                        variant="default"
+                                        className="h-12 w-full justify-start gap-3"
+                                        onClick={closeMenu}
+                                    >
+                                        <Avatar className="h-9 w-9 shrink-0">
+                                            <AvatarImage
+                                                src={
+                                                    user.user_metadata?.avatar_url as
+                                                        | string
+                                                        | undefined
+                                                }
+                                                alt={(user.email as string | undefined) ?? ""}
+                                            />
+                                            <AvatarFallback className="bg-white/15 text-white font-semibold">
+                                                {(user.user_metadata?.full_name ||
+                                                    user.email)?.[0]?.toUpperCase()}
+                                            </AvatarFallback>
+                                        </Avatar>
+                                    </Button>
+                                </DropdownMenuTrigger>
 
-                            <DropdownMenuContent align="end" className="w-56">
-                                <DropdownMenuLabel className="font-normal">
-                                    <div className="flex flex-col space-y-1">
-                                        <p className="text-sm font-semibold leading-none">
-                                            {user.user_metadata?.full_name || user.email}
-                                        </p>
-                                        <p className="text-xs leading-none text-muted-foreground">
-                                            {user.email}
-                                        </p>
-                                    </div>
-                                </DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem>
-                                    <UserIcon className="mr-2 h-4 w-4" />
-                                    <span>Profile</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    <Ticket className="mr-2 h-4 w-4" />
-                                    <span>My bookings</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuSeparator />
-                                <DropdownMenuItem onClick={signOut}>
-                                    <LogOut className="mr-2 h-4 w-4" />
-                                    <span>Sign out</span>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    ) : (
-                        <AuthDialog />
-                    )}
+                                <DropdownMenuContent align="start" className="w-56">
+                                    <DropdownMenuLabel className="font-normal">
+                                        <div className="flex flex-col space-y-1">
+                                            <p className="text-sm font-semibold leading-none">
+                                                {user.user_metadata?.full_name || user.email}
+                                            </p>
+                                            <p className="text-xs leading-none text-muted-foreground">
+                                                {user.email}
+                                            </p>
+                                        </div>
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onClick={closeMenu}>
+                                        <UserIcon className="mr-2 h-4 w-4" />
+                                        Profile
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={closeMenu}>
+                                        <Ticket className="mr-2 h-4 w-4" />
+                                        My bookings
+                                    </DropdownMenuItem>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuItem onClick={signOut}>
+                                        <LogOut className="mr-2 h-4 w-4" />
+                                        Sign out
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        ) : (
+                            <AuthDialog />
+                        )}
+                    </div>
                 </div>
 
                 <div className="flex items-center gap-1 lg:hidden">
@@ -179,29 +184,33 @@ const Header = () => {
 
                     <div className="mt-2">
                         {user ? (
-                            <Button
-                                variant="default"
-                                className="h-12 w-full justify-start gap-3"
-                                onClick={closeMenu}
-                            >
-                                <Avatar className="h-9 w-9 shrink-0">
-                                    <AvatarImage
-                                        src={user.user_metadata?.avatar_url as string | undefined}
-                                        alt={(user.email as string | undefined) ?? ""}
-                                    />
-                                    <AvatarFallback className="bg-white/15 text-white font-semibold">
-                                        {(user.user_metadata?.full_name ||
-                                            user.email)?.[0]?.toUpperCase()}
-                                    </AvatarFallback>
-                                </Avatar>
-
-                                <div className="flex flex-col items-start leading-none">
-                                    <span className="font-semibold text-white">
-                                        {user.user_metadata?.full_name || user.email}
-                                    </span>
-                                    <span className="text-xs text-white/70">{user.email}</span>
+                            <div className="space-y-2">
+                                <div className="flex items-center gap-3 p-3 rounded-lg bg-muted/50">
+                                    <Avatar className="h-8 w-8 shrink-0">
+                                        <AvatarImage
+                                            src={
+                                                user.user_metadata?.avatar_url as string | undefined
+                                            }
+                                        />
+                                        <AvatarFallback className="bg-white/15 text-white font-semibold">
+                                            {(user.user_metadata?.full_name ||
+                                                user.email)?.[0]?.toUpperCase()}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                    <div className="flex flex-col">
+                                        <span className="font-medium">
+                                            {user.user_metadata?.full_name || user.email}
+                                        </span>
+                                        <span className="text-xs text-muted-foreground">
+                                            {user.email}
+                                        </span>
+                                    </div>
                                 </div>
-                            </Button>
+                                <Button variant="destructive" className="w-full" onClick={signOut}>
+                                    <LogOut className="w-4 h-4 mr-2" />
+                                    Sign out
+                                </Button>
+                            </div>
                         ) : (
                             <AuthDialog />
                         )}
