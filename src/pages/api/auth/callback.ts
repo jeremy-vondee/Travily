@@ -3,6 +3,7 @@ import { supabase } from "../../../lib/supabaseClient"
 
 export const GET: APIRoute = async ({ url, cookies, redirect }) => {
     const code = url.searchParams.get("code")
+    const currentPath = window.location.pathname + window.location.search
 
     if (!code) {
         return new Response("No code provided", { status: 400 })
@@ -18,5 +19,5 @@ export const GET: APIRoute = async ({ url, cookies, redirect }) => {
     cookies.set("sb_access_token", access_token, { path: "/" })
     cookies.set("sb_refresh_token", refresh_token, { path: "/" })
 
-    return redirect("/")
+    return redirect(currentPath)
 }
