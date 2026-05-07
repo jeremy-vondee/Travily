@@ -26,10 +26,12 @@ const AuthDialog = () => {
     }
 
     const signInWithGoogle = async () => {
+        const currentPath = window.location.pathname + window.location.search
+
         await supabase.auth.signInWithOAuth({
             provider: "google",
             options: {
-                redirectTo: `${window.location.origin}/`,
+                redirectTo: `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(currentPath)}`,
             },
         })
     }
@@ -47,10 +49,12 @@ const AuthDialog = () => {
 
         setLoading(true)
 
+        const currentPath = window.location.pathname + window.location.search
+
         const { error } = await supabase.auth.signInWithOtp({
             email,
             options: {
-                emailRedirectTo: `${window.location.origin}/`,
+                emailRedirectTo: `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(currentPath)}`,
             },
         })
 
