@@ -13,7 +13,7 @@ const SearchField = () => {
     }
     return (
         <div className="mt-28 w-full  mx-auto">
-            <div className="mx-auto max-w-6xl">
+            <div className="mx-auto max-w-6xl sm: px-3">
                 <ButtonGroup aria-label="Button group" className="mb-3">
                     <Button
                         type="button"
