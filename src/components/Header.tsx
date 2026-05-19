@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { CircleQuestionMark, Ticket, LogOut, User as UserIcon, Menu, X } from "lucide-react"
 import ModeToggle from "./ModeToggle"
-import LanguageDiaglog from "./LanguageDialog"
 import AuthDialog from "./AuthDialog"
 import { supabase } from "@/lib/supabaseClient"
 import { type User } from "@supabase/supabase-js"
@@ -69,7 +68,6 @@ const Header = () => {
                         <span className="leading-none">Help</span>
                     </a>
 
-                    <LanguageDiaglog />
                     <ModeToggle />
 
                     <div className="mt-2">
@@ -175,8 +173,6 @@ const Header = () => {
                     </a>
 
                     <div className="my-2 border-t border-border" />
-
-                    <LanguageDiaglog />
 
                     <div className="mt-2">
                         <ModeToggle />
